@@ -5,6 +5,8 @@ import './style.css'
 import PrimeVue from 'primevue/config'
 
 // Themes
+import 'primeicons/primeicons.css';
+
 import 'primeflex/primeflex.css'
 import Aura from '@primeuix/themes/aura'
 
@@ -12,15 +14,12 @@ import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import Header from './components/Header.vue'
 import MovieGrid from './components/MovieGrid.vue'
-import { SelectButton, Button, DataView } from 'primevue'
+import { SelectButton, Button, DataView, Card, Dialog } from 'primevue'
 
 const app = createApp(App)
 app.use(PrimeVue, {
     theme: {
-        preset: Aura,
-        options: {
-            darkModeSelector: '.my-app-dark',
-        }
+        preset: Aura
     }
 })
 
@@ -28,6 +27,8 @@ app.use(PrimeVue, {
 app.component('Button', Button)
 app.component('SelectButton', SelectButton)
 app.component('DataView', DataView)
+app.component('Card', Card)
+app.component('Dialog', Dialog)
 
 // Custom Components
 app.component('Header', Header)
