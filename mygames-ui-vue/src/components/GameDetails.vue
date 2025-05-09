@@ -4,7 +4,7 @@
         @hide="emits('hideModal')"
     >
         <template #header>
-            {{ props.gameDetails?.name }} {{ props.gameDetails?.yearpublished }}
+            <h2>{{ props.gameDetails?.name }} ({{ props.gameDetails?.yearpublished }})</h2>
         </template>
         <div class="grid">
             <div class="col" style="overflow: hidden;">
@@ -25,7 +25,18 @@
                 <p><strong>Description: </strong>{{ props.gameDetails?.description }}</p>
             </div>
         </div>
-        <template #footer></template>
+        <template #footer>
+            <div class="pt-3">
+                <Button
+                    severity="info"
+                    @click="emits('edit', props.gameDetails)"
+                >Edit</Button>
+                <Button
+                    severity="danger"
+                    @click="emits('delete', props.gameDetails.id)"
+                >Delete</Button>
+            </div>
+        </template>
     </Dialog>
 </template>
 <script setup lang="ts">
@@ -35,6 +46,8 @@
     }>()
 
     const emits = defineEmits([
-        'hideModal'
+        'hideModal',
+        'edit',
+        'delete'
     ])
 </script>
