@@ -13,7 +13,7 @@ import Aura from '@primeuix/themes/aura'
 // Component imports
 import App from './App.vue'
 import Header from './components/Header.vue'
-import MovieGrid from './components/MovieGrid.vue'
+import GameGrid from './components/GameGrid.vue'
 import { SelectButton, Button, DataView, Card, Dialog } from 'primevue'
 
 const app = createApp(App)
@@ -32,6 +32,6 @@ app.component('Dialog', Dialog)
 
 // Custom Components
 app.component('Header', Header)
-app.component('MovieGrid', MovieGrid)
+app.component('GameGrid', GameGrid)
 
 app.mount('#app')

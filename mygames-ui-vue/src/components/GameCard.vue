@@ -1,5 +1,6 @@
 <template>
   <Card
+    @click="emits('gameClicked', game.id)"
     style="overflow: hidden; width: 15rem; height: auto;"
     class="p-3 border-1 surface-200 border-round shadow-3 hover:shadow-5 cursor-pointer bg-white hover:surface-200"
   >
@@ -52,4 +53,8 @@ button {
   const props = defineProps<{
     game: any;
   }>()
+
+  const emits = defineEmits([
+    'gameClicked'
+  ])
 </script>
