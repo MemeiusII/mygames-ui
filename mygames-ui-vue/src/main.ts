@@ -14,7 +14,7 @@ import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import Header from './components/Header.vue'
 import GameGrid from './components/GameGrid.vue'
-import { SelectButton, Button, DataView, Card, Dialog } from 'primevue'
+import { SelectButton, Button, DataView, Card, Dialog, Tooltip } from 'primevue'
 
 const app = createApp(App)
 app.use(PrimeVue, {
@@ -22,6 +22,9 @@ app.use(PrimeVue, {
         preset: Aura
     }
 })
+
+// Tooltip setup
+app.directive('tooltip', Tooltip)
 
 // PrimeVue Components
 app.component('Button', Button)

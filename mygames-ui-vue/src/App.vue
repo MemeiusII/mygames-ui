@@ -9,7 +9,7 @@
       id="form-button"
       type="button"
       style="height: 40px;"
-      @click="toggleFormModal"
+      @click="toggleFormModal_Edit(null)"
     >
       <i class="pi pi-plus"></i>
     </Button>
@@ -60,9 +60,31 @@ import GameForm from './components/GameForm.vue';
     showFormModal.value = !showFormModal.value
   }
   function toggleFormModal_Edit(game: any) {
-    gameFormModel.value = game
+    if(game) {
+      gameFormModel.value = game
+    } else {
+      gameFormModel.value = {
+        id: "",
+        name: "",
+        description: "",
+        image: "",
+        yearpublished: null,
+        rating: null,
+        weight: null,
+        minplayers: null,
+        maxplayers: null,
+        minplaytime: null,
+        maxplaytime: null,
+        minage: null,
+        designers: [],
+        artists: [],
+        publishers: []
+      }
+    }
 
-    toggleDetailsModal(currentGameDetails.value.id)
+    if(showDetailsModal.value) {
+      toggleDetailsModal(currentGameDetails.value.id)
+    }
     toggleFormModal()
   }
 </script>
