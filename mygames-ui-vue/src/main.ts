@@ -14,7 +14,7 @@ import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import Header from './components/Header.vue'
 import GameGrid from './components/GameGrid.vue'
-import { SelectButton, Button, DataView, Card, Dialog, Tooltip } from 'primevue'
+import { SelectButton, Button, DataView, Card, Dialog, Tooltip, Toast, ToastService, ConfirmDialog, ConfirmationService } from 'primevue'
 
 const app = createApp(App)
 app.use(PrimeVue, {
@@ -22,6 +22,8 @@ app.use(PrimeVue, {
         preset: Aura
     }
 })
+app.use(ToastService)
+app.use(ConfirmationService)
 
 // Tooltip setup
 app.directive('tooltip', Tooltip)
@@ -32,6 +34,8 @@ app.component('SelectButton', SelectButton)
 app.component('DataView', DataView)
 app.component('Card', Card)
 app.component('Dialog', Dialog)
+app.component('Toast', Toast)
+app.component('ConfirmDialog', ConfirmDialog)
 
 // Custom Components
 app.component('Header', Header)

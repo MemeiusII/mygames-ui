@@ -1,8 +1,9 @@
 <template>
   <Card
     @click="emits('gameClicked', game.id)"
-    style="overflow: hidden; width: 15rem; height: auto;"
+    style="overflow: hidden; width: 15rem; height: 500px;"
     class="p-3 border-1 surface-200 border-round shadow-3 hover:shadow-5 cursor-pointer bg-white hover:surface-200"
+    v-tooltip="{ value: 'Click for more details', showDelay: 1000, hideDelay: 300 }"
   >
     <template #title>
       {{ props.game.name }} ({{ props.game.yearpublished }})
@@ -16,9 +17,9 @@
           class="game-image"
         />
       </div>
-      <br />
+    </template>
+    <template #footer>
       <span>
-        <br />
         Rating: <Tag :value="props.game.rating" ></Tag>
       </span>
     </template>

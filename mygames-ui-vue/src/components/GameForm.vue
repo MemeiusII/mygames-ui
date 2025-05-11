@@ -1,12 +1,12 @@
 <template>
     <Dialog class="m-5"
-        :visible="props.showModal" 
+        :visible="localShowModal" 
         @update:visible="emits('hideModal')"
     >
         <template #header>
             <h2>{{ props.game?.id !== '' ? 'Edit game' : 'Add game' }}</h2>
         </template>
-        <form @submit.prevent="onSubmit" class="p-5">
+        <form v-if="props.game" @submit.prevent="onSubmit" class="p-5">
             <div class="grid">
                 <!-- Id -->
                 <InputGroup class="field col"
@@ -21,7 +21,7 @@
                             type="text"
                             v-model="form.id.$value"
                             :disabled="!!props.game?.id"
-                            :invalid="form.id.$error"
+                            :invalid="!!form.id.$error"
                         ></InputText>
                         <label for="id">Id</label>
                     </FloatLabel>
@@ -37,7 +37,7 @@
                             id="name"
                             type="text"
                             v-model="form.name.$value"
-                            :invalid="form.name.$error"
+                            :invalid="!!form.name.$error"
                         ></InputText>
                         <label for="name">Name</label>
                     </FloatLabel>
@@ -49,12 +49,12 @@
                         <i class="pi pi-pencil"></i>
                     </InputGroupAddon>
                     <FloatLabel variant="on">
-                        <InputText
+                        <InputNumber
                             id="year"
-                            type="number"
+                            :min="0"
                             v-model="form.yearpublished.$value"
-                            :invalid="form.yearpublished.$error"
-                        ></InputText>
+                            :invalid="!!form.yearpublished.$error"
+                        ></InputNumber>
                         <label for="year">Year Published</label>
                     </FloatLabel>
                 </InputGroup>
@@ -71,7 +71,7 @@
                             id="description"
                             type="text"
                             v-model="form.description.$value"
-                            :invalid="form.description.$error"
+                            :invalid="!!form.description.$error"
                         ></InputText>
                         <label for="description">Description</label>
                     </FloatLabel>
@@ -89,7 +89,7 @@
                             id="image"
                             type="text"
                             v-model="form.image.$value"
-                            :invalid="form.image.$error"
+                            :invalid="!!form.image.$error"
                         ></InputText>
                         <label for="image">Image Link</label>
                     </FloatLabel>
@@ -107,8 +107,9 @@
                             id="rating"
                             :min="0"
                             :max="10"
+                            :min-fraction-digits="1"
                             v-model="form.rating.$value"
-                            :invalid="form.rating.$error"
+                            :invalid="!!form.rating.$error"
                         ></InputNumber>
                         <label for="rating">Rating</label>
                     </FloatLabel>
@@ -124,8 +125,9 @@
                             id="weight"
                             :min="0"
                             :max="5"
+                            :min-fraction-digits="1"
                             v-model="form.weight.$value"
-                            :invalid="form.weight.$error"
+                            :invalid="!!form.weight.$error"
                         ></InputNumber>
                         <label for="weight">Weight</label>
                     </FloatLabel>
@@ -141,7 +143,7 @@
                             id="minage"
                             :min="0"
                             v-model="form.minage.$value"
-                            :invalid="form.minage.$error"
+                            :invalid="!!form.minage.$error"
                         ></InputNumber>
                         <label for="minage">Min Age</label>
                     </FloatLabel>
@@ -159,7 +161,7 @@
                             id="minplayers"
                             :min="0"
                             v-model="form.minplayers.$value"
-                            :invalid="form.minplayers.$error"
+                            :invalid="!!form.minplayers.$error"
                         ></InputNumber>
                         <label for="minplayers">Min Players</label>
                     </FloatLabel>
@@ -175,7 +177,7 @@
                             id="maxplayers"
                             :min="0"
                             v-model="form.maxplayers.$value"
-                            :invalid="form.maxplayers.$error"
+                            :invalid="!!form.maxplayers.$error"
                         ></InputNumber>
                         <label for="maxplayers">Max Players</label>
                     </FloatLabel>
@@ -191,7 +193,7 @@
                             id="minplaytime"
                             :min="0"
                             v-model="form.minplaytime.$value"
-                            :invalid="form.minplaytime.$error"
+                            :invalid="!!form.minplaytime.$error"
                         ></InputNumber>
                         <label for="minplaytime">Min Playtime</label>
                     </FloatLabel>
@@ -207,7 +209,7 @@
                             id="maxplaytime"
                             :min="0"
                             v-model="form.maxplaytime.$value"
-                            :invalid="form.maxplaytime.$error"
+                            :invalid="!!form.maxplaytime.$error"
                         ></InputNumber>
                         <label for="maxplaytime">Max Playtime</label>
                     </FloatLabel>
@@ -224,7 +226,7 @@
                         id="designers"
                         type="text"
                         v-model="form.designers.$value"
-                        :invalid="form.designers.$error"
+                        :invalid="!!form.designers.$error"
                     ></InputText>
                     <label for="designers">Designers</label>
                 </FloatLabel>
@@ -240,7 +242,7 @@
                         id="artists"
                         type="text"
                         v-model="form.artists.$value"
-                        :invalid="form.artists.$error"
+                        :invalid="!!form.artists.$error"
                     ></InputText>
                     <label for="artists">Artists</label>
                 </FloatLabel>
@@ -256,19 +258,20 @@
                         id="publishers"
                         type="text"
                         v-model="form.publishers.$value"
-                        :invalid="form.publishers.$error"
+                        :invalid="!!form.publishers.$error"
                     ></InputText>
                     <label for="publishers">Publishers</label>
                 </FloatLabel>
             </InputGroup>
             <small v-if="form.publishers.$error" class="text-red-500">{{ form.publishers.$errorMessages[0] }}</small>
             <Button type="submit">Submit</Button>
+            <Button @click="emits('hideModal')" severity="danger">Cancel</Button>
         </form>
     </Dialog>
 </template>
 <script setup lang="ts">
     import { InputGroup, InputText, InputNumber, InputGroupAddon, FloatLabel } from 'primevue'
-    import { reactive, shallowRef, watchEffect } from 'vue'
+    import { reactive, ref, shallowRef, watch, watchEffect } from 'vue'
     import { defineForm, field, isValidForm, toObject } from 'vue-yup-form'
     import * as yup from 'yup'
 
@@ -278,26 +281,29 @@
     }>()
 
     const emits = defineEmits([
-        'hideModal'
+        'hideModal',
+        'edit',
+        'add'
     ])
 
     const form = shallowRef()
+    const localShowModal = ref(props.showModal)
     const gameProp = reactive({
         id: "",
         name: "",
         description: "",
         image: "",
-        yearpublished: null,
+        yearpublished: null as number | null,
         rating: null,
         weight: null,
         minplayers: null,
         maxplayers: null,
         minplaytime: null,
-        maxplaytime: null,
-        minage: null,
-        designers: [],
-        artists: [],
-        publishers: [] 
+        maxplaytime: null as number | null,
+        minage: null as number | null,
+        designers: "",
+        artists: "",
+        publishers: "" 
     })
 
     function generateForm() {
@@ -314,9 +320,9 @@
             maxplaytime: field(gameProp.maxplaytime, yup.number().required()),
             minage: field(gameProp.minage, yup.number().required()),
             weight: field(gameProp.weight, yup.number().required()),
-            designers: field<string[]>(gameProp.designers, yup.array()),
-            artists: field<string[]>(gameProp.artists, yup.array()),
-            publishers: field<string[]>(gameProp.publishers, yup.array()),
+            designers: field(gameProp.designers, yup.string()),
+            artists: field(gameProp.artists, yup.string()),
+            publishers: field(gameProp.publishers, yup.string()),
         })
     }
 
@@ -325,33 +331,41 @@
         gameProp.name = props.game?.name ?? ""
         gameProp.description = props.game?.description ?? ""
         gameProp.image = props.game?.image ?? ""
-        gameProp.yearpublished = props.game?.yearpublished ?? null
+        gameProp.yearpublished = parseInt(props.game?.yearpublished) ?? null
         gameProp.rating = props.game?.rating ?? null 
         gameProp.weight = props.game?.weight ?? null
         gameProp.minplayers = props.game?.minplayers ?? null
         gameProp.maxplayers = props.game?.maxplayers ?? null
         gameProp.minplaytime = props.game?.minplaytime ?? null
-        gameProp.maxplaytime = props.game?.maxplaytime ?? null
-        gameProp.minage = props.game?.minage ?? null
-        gameProp.designers = props.game?.designers ?? []
-        gameProp.artists = props.game?.artists ?? []
-        gameProp.publishers = props.game?.publishers ?? []
+        gameProp.maxplaytime = parseInt(props.game?.maxplaytime) ?? null
+        gameProp.minage = parseInt(props.game?.minage) ?? null
+        gameProp.designers = props.game?.designers.join(',') ?? ""
+        gameProp.artists = props.game?.artists.join(',') ?? ""
+        gameProp.publishers = props.game?.publishers.join(',') ?? ""
 
         form.value = generateForm()
     })
 
-    function onSubmit() {
+    watch(() => props.showModal, (newVal) => {
+        localShowModal.value = newVal
+    })
+
+    async function onSubmit() {
         if(!isValidForm(form.value)) {
             alert("Please check your entries.")
             return
         }
-        if(props.game?.id) {
-            console.log('Edit')
-        } else {
-            console.log('Add')
-        }
-        const game = toObject(form.value)
-        console.log(game)
+
+        const designers = (form.value.designers.$value ?? "").split(",")
+
+        const artists = (form.value.artists.$value ?? "").split(",")
+
+        const publishers = (form.value.publishers.$value ?? "").split(",")
+
+        const formValues = toObject(form.value)
+        const game = {...formValues, designers, publishers, artists}
+        
+        props.game.id !== '' ? emits('edit', game) : emits('add', game)
         emits('hideModal')
     }
 </script>

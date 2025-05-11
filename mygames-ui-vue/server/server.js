@@ -8,7 +8,7 @@ const app = new Express()
 // Allow requests from localhost:5173 (Vite frontend)
 app.use(cors({
   origin: 'http://localhost:5173', // Allow requests from the frontend dev server
-  methods: ['GET', 'POST', 'DELETE', 'PATCH'],       // You can customize allowed methods
+  methods: ['GET', 'PUT', 'DELETE', 'PATCH'],       // You can customize allowed methods
   allowedHeaders: ['Content-Type'], // Allow headers if needed (optional)
 }))
 

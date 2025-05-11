@@ -1,4 +1,4 @@
-export async function getSummarizedGames () {
+export async function apiGetSummarizedGames () {
   // 1. Query our data endpoint for getGames (asynchronous)
   const response = await fetch('http://localhost:3000/data/game')
 
@@ -9,7 +9,7 @@ export async function getSummarizedGames () {
   return gameData
 }
 
-export async function getGameDetails (gameId: number) {
+export async function apiGetGameDetails (gameId: number) {
   // 1. Query our data endpoint for getGames (asynchronous)
   const response = await fetch(`http://localhost:3000/data/game/${gameId}`)
 
@@ -20,7 +20,7 @@ export async function getGameDetails (gameId: number) {
   return gameData
 }
 
-export async function putGameDetails (gameData: any) {
+export async function apiPutGameDetails (gameData: any) {
   const response = await fetch('http://localhost:3000/data/game', {
     method: 'PUT',
     headers: {
@@ -31,7 +31,7 @@ export async function putGameDetails (gameData: any) {
   return await response.json()
 }
 
-export async function patchGameDetails (gameData: any) {
+export async function apiPatchGameDetails (gameData: any) {
   const response = await fetch('http://localhost:3000/data/game', {
     method: 'PATCH',
     headers: {
@@ -42,7 +42,7 @@ export async function patchGameDetails (gameData: any) {
   return await response.json()
 }
 
-export async function deleteGame (gameId: number) {
+export async function apiDeleteGame (gameId: number) {
   // Send delete request
   const response = await fetch(`http://localhost:3000/data/game/${gameId}`, {
     method: 'DELETE'
